@@ -1,0 +1,23 @@
+{
+    "name": "joshuajabbour/authorizable",
+    "description": "",
+    "authors": [
+        {
+            "name": "Joshua Jabbour",
+            "email": "code@joshuajabbour.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "JoshuaJabbour\\Authorizable\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
