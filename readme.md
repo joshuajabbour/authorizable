@@ -1,0 +1,1 @@
+A flexible authorization component.

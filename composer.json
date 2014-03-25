@@ -1,6 +1,6 @@
 {
     "name": "joshuajabbour/authorizable",
-    "description": "",
+    "description": "A flexible authorization component.",
     "authors": [
         {
             "name": "Joshua Jabbour",
