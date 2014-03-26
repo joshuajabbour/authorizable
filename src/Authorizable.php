@@ -163,6 +163,16 @@ class Authorizable
         }
     }
 
+    /**
+     * Returns the current rule set.
+     *
+     * @return Collection
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
     public function setCheckToSequential()
     {
         $this->check_sequentially = true;
