@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Authorizable: A flexible authorization component for PHP.
+ * Authorizable: A flexible authorization component.
  *
  * @package Authorizable
  */
@@ -152,7 +152,7 @@ class Manager
     }
 
     /**
-     * Returns all current rules.
+     * Returns all rules.
      *
      * @return RuleCollection
      */
