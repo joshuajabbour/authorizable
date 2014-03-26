@@ -2,6 +2,7 @@
 
 namespace JoshuaJabbour\Authorizable\Tests;
 
+use stdClass;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 use JoshuaJabbour\Authorizable\Rule;
@@ -60,5 +61,37 @@ class RuleTest extends PHPUnit_Framework_TestCase
 
         $restriction = new Restriction('update', 'Object2');
         $this->assertFalse($restriction->check());
+    }
+
+    public function testCanCheckPrivilegeAgainstConditions()
+    {
+        $object1 = new stdClass;
+        $object1->id = 1;
+
+        $object2 = new stdClass;
+        $object2->id = 2;
+
+        $privilege = new Privilege('read', 'stdClass', function ($object) {
+            return $object->id == 1;
+        });
+
+        $this->assertTrue($privilege->check($object1));
+        $this->assertFalse($privilege->check($object2));
+    }
+
+    public function testCanCheckRestrictionAgainstConditions()
+    {
+        $object1 = new stdClass;
+        $object1->id = 1;
+
+        $object2 = new stdClass;
+        $object2->id = 2;
+
+        $restriction = new Restriction('read', 'stdClass', function ($object) {
+            return $object->id == 1;
+        });
+
+        $this->assertFalse($restriction->check($object1));
+        $this->assertTrue($restriction->check($object2));
     }
 }
