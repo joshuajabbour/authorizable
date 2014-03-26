@@ -91,4 +91,33 @@ class AuthorizableTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->auth->cannot('update', $object1));
         $this->assertTrue($this->auth->cannot('update', $object2));
     }
+
+    public function testCanEvaluateRulesWithExtraParameters()
+    {
+        $object1 = new stdClass;
+        $object1->id = 1;
+
+        $object2 = new stdClass;
+        $object2->id = 2;
+
+        $this->auth->allow('read', 'stdClass', function ($object, $extra = null) {
+            return $object->id == 1 && $extra == true;
+        });
+
+        $this->auth->deny('update', 'stdClass', function ($object, $extra = null) {
+            return $object->id != 1 || $extra == false;
+        });
+
+        $this->assertTrue($this->auth->can('read', $object1, true));
+        $this->assertFalse($this->auth->can('read', $object1, false));
+        $this->assertFalse($this->auth->can('read', $object2, 'undefined'));
+
+        $this->assertTrue($this->auth->can('update', $object1, true));
+        $this->assertFalse($this->auth->can('update', $object1, false));
+        $this->assertFalse($this->auth->can('update', $object2));
+
+        $this->assertFalse($this->auth->cannot('update', $object1, true));
+        $this->assertTrue($this->auth->cannot('update', $object1, false));
+        $this->assertTrue($this->auth->cannot('update', $object2));
+    }
 }
