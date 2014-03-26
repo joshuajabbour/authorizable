@@ -38,7 +38,7 @@ class Authorizable
 
         $allowed = false;
 
-        $rules = $this->getRulesFor($action, $resource);
+        $rules = $this->getRelevantRules($action, $resource);
 
         if (! $rules->isEmpty()) {
             foreach ($rules as $rule) {
@@ -59,13 +59,6 @@ class Authorizable
         }
 
         return $allowed;
-    }
-
-    public function getRulesFor($action, $resource)
-    {
-        return $this->rules->filter(function ($rule) use ($action, $resource) {
-            return $rule->getAction() == $action && $rule->getResource() == $resource;
-        });
     }
 
     /**
