@@ -50,6 +50,50 @@ abstract class Rule
     abstract public function check();
 
     /**
+     * Determine if the rule is relevant based on an action and resource.
+     *
+     * @param string|array $action Action to test against the rule.
+     * @param string|object $resource Resource to test against the rule.
+     * @return boolean
+     */
+    public function isRelevant($action, $resource)
+    {
+        return $this->matchesAction($action) && $this->matchesResource($resource);
+    }
+
+    /**
+     * Determine if the rule matches an action.
+     *
+     * @param string|array $action Action to test against the rule.
+     * @return boolean
+     */
+    public function matchesAction($action)
+    {
+        return in_array($this->action, (array) $action);
+    }
+
+    /**
+     * Determine if the rule matches a resource.
+     *
+     * @param string|object $resource Resource to test against the rule.
+     * @return boolean
+     */
+    public function matchesResource($resource)
+    {
+        if (is_string($this->resource) && $this->resource == static::WILDCARD) {
+            return true;
+        } elseif (gettype($this->resource) == gettype($resource)) {
+            return $this->resource == $resource;
+        } elseif (is_object($this->resource) && is_string($resource)) {
+            return get_class($this->resource) === $resource;
+        } elseif (is_string($this->resource) && is_object($resource)) {
+            return $this->resource === get_class($resource);
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Return the action for the rule.
      *
      * @return string
@@ -62,7 +106,7 @@ abstract class Rule
     /**
      * Return the resource for the rule.
      *
-     * @return mixed
+     * @return string|object
      */
     public function getResource()
     {

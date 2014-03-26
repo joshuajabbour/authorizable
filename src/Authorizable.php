@@ -31,7 +31,7 @@ class Authorizable
         $action = array_shift($args);
         $resource = array_shift($args);
 
-        if (! is_string($resource)) {
+        if (is_object($resource)) {
             $resource_object = $resource;
             $resource = get_class($resource_object);
             array_unshift($args, $resource_object);
