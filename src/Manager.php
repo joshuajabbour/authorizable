@@ -90,7 +90,7 @@ class Manager
      * @param array|string $actions Actions for the rule.
      * @param array|string $resources Resources for the rule.
      * @param Closure|null $condition Optional condition for the rule.
-     * @return void
+     * @return RuleCollection
      */
     public function allow($actions, $resources, $condition = null)
     {
@@ -103,7 +103,7 @@ class Manager
      * @param array|string $actions Actions for the rule.
      * @param array|string $resources Resources for the rule.
      * @param Closure|null $condition Optional condition for the rule.
-     * @return void
+     * @return RuleCollection
      */
     public function deny($actions, $resources, $condition = null)
     {
@@ -117,7 +117,7 @@ class Manager
      * @param array|string $actions Actions for the rule.
      * @param array|string $resources Resources for the rule.
      * @param Closure|null $condition Optional condition for the rule.
-     * @return Rule|RuleCollection
+     * @return RuleCollection
      */
     protected function addRules($behavior, $actions, $resources, $condition = null)
     {
@@ -148,7 +148,7 @@ class Manager
 
         $this->rules = $this->rules->merge($rules);
 
-        return $rules->count() > 1 ? $rules : $rules->first();
+        return $rules;
     }
 
     /**

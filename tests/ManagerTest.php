@@ -23,8 +23,8 @@ class ManagerTest extends PHPUnit_Framework_TestCase
 
     public function testCanCreateNewRules()
     {
-        $rule1 = $this->auth->allow('read', 'User');
-        $rule2 = $this->auth->deny('update', 'User');
+        $rule1 = $this->auth->allow('read', 'User')->first();
+        $rule2 = $this->auth->deny('update', 'User')->first();
 
         $this->assertCount(2, $this->auth->getRules());
 
