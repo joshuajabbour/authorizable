@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Authorizable: A flexible authorization component for PHP.
  *
@@ -9,17 +10,25 @@ namespace JoshuaJabbour\Authorizable;
 use JoshuaJabbour\Authorizable\Rule\Privilege;
 use JoshuaJabbour\Authorizable\Rule\Restriction;
 use JoshuaJabbour\Authorizable\Rule\Collection as RuleCollection;
+use JoshuaJabbour\Authorizable\Strategy\Strategy;
+use JoshuaJabbour\Authorizable\Strategy\Sequential as SequentialStrategy;
 use InvalidArgumentException;
 use BadMethodCallException;
 use Closure;
 
 class Authorizable
 {
-    protected $check_sequentially = true;
+    protected $strategy;
 
-    public function __construct()
+    public function __construct(Strategy $strategy = null)
     {
         $this->rules = new RuleCollection;
+        $this->strategy = $strategy ?: new SequentialStrategy;
+    }
+
+    protected function check(RuleCollection $rules, array $args = array())
+    {
+        return $this->strategy->check($rules, $args);
     }
 
     /**
@@ -39,29 +48,7 @@ class Authorizable
             array_unshift($args, $resource_object);
         }
 
-        $allowed = false;
-
-        $rules = $this->getRelevantRules($action, $resource);
-
-        if (! $rules->isEmpty()) {
-            foreach ($rules as $rule) {
-                if ($this->check_sequentially) {
-                    // Logic to check rules in sequential order.
-                    $allowed = $rules->reduce(function ($result, $rule) use ($args) {
-                        return $result && call_user_func_array([$rule, 'check'], $args);
-                    }, true) || call_user_func_array([$rules->last(), 'check'], $args);
-                } else {
-                    // Logic to check rules in additive manner.
-                    $allowed = ! $rules->map(function ($rule) use ($args) {
-                        return call_user_func_array([$rule, 'check'], $args);
-                    })->filter(function ($result) {
-                        return $result == true;
-                    })->isEmpty();
-                }
-            }
-        }
-
-        return $allowed;
+        return $this->check($this->getRelevantRules($action, $resource), $args);
     }
 
     /**
@@ -186,15 +173,9 @@ class Authorizable
         return $this->rules->getRelevantRules($action, $resource);
     }
 
-    public function setCheckToSequential()
+    public function setStrategy(Strategy $strategy)
     {
-        $this->check_sequentially = true;
-        return $this;
-    }
-
-    public function setCheckToAdditive()
-    {
-        $this->check_sequentially = false;
+        $this->strategy = $strategy;
         return $this;
     }
 
