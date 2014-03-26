@@ -1,0 +1,97 @@
+<?php
+
+namespace JoshuaJabbour\Authorizable;
+
+use Closure;
+
+abstract class Rule
+{
+    /**
+     * @var string Action for the rule.
+     */
+    protected $action;
+
+    /**
+     * @var string Resource for the rule.
+     */
+    protected $resource;
+
+    /**
+     * @var Closure Optional condition for the rule.
+     */
+    protected $condition;
+
+    /**
+     * @constant string Wildcard to match any action or resource.
+     */
+    const WILDCARD = 'all';
+
+    /**
+     * Define a rule for the given action and resource.
+     *
+     * @param string $action Action for the rule.
+     * @param string $resource Resource for the rule.
+     * @param Closure|null $condition Optional condition for the rule.
+     */
+    public function __construct($action, $resource, $condition = null)
+    {
+        $this->action = $action;
+        $this->resource = $resource;
+        if ($condition instanceof Closure) {
+            $this->condition = $condition;
+        }
+    }
+
+    /**
+     * Check the condition for the rule.
+     *
+     * @return boolean
+     */
+    abstract public function check();
+
+    /**
+     * Return the action for the rule.
+     *
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    /**
+     * Return the resource for the rule.
+     *
+     * @return mixed
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
+
+    /**
+     * Return the condition for the rule.
+     *
+     * @return Closure|null
+     */
+    public function getCondition()
+    {
+        return $this->condition;
+    }
+
+    /**
+     * Invoke the condition for the rule.
+     *
+     * @param array $args
+     * @return boolean|null
+     */
+    protected function checkCondition($args = array())
+    {
+        return is_callable($this->condition) ? call_user_func_array($this->condition, $args) : null;
+    }
+
+    public function __invoke()
+    {
+        return $this->checkCondition(func_get_args());
+    }
+}
