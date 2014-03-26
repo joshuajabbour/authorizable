@@ -58,9 +58,11 @@ class RuleTest extends PHPUnit_Framework_TestCase
     {
         $privilege = new Privilege('read', 'Object1');
         $this->assertTrue($privilege->check());
+        $this->assertTrue($privilege());
 
         $restriction = new Restriction('update', 'Object2');
         $this->assertFalse($restriction->check());
+        $this->assertFalse($restriction());
     }
 
     public function testCanCheckPrivilegeAgainstConditions()

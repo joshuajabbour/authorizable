@@ -129,13 +129,13 @@ abstract class Rule
      * @param array $args
      * @return boolean|null
      */
-    protected function checkCondition($args = array())
+    protected function checkCondition(array $args = array())
     {
         return is_callable($this->condition) ? call_user_func_array($this->condition, $args) : true;
     }
 
     public function __invoke()
     {
-        return $this->checkCondition(func_get_args());
+        return call_user_func_array([$this, 'check'], func_get_args());
     }
 }
