@@ -5,9 +5,9 @@ namespace JoshuaJabbour\Authorizable\Tests;
 use stdClass;
 use Mockery;
 use PHPUnit_Framework_TestCase;
-use JoshuaJabbour\Authorizable\Rule;
-use JoshuaJabbour\Authorizable\Privilege;
-use JoshuaJabbour\Authorizable\Restriction;
+use JoshuaJabbour\Authorizable\Rule\Rule;
+use JoshuaJabbour\Authorizable\Rule\Privilege;
+use JoshuaJabbour\Authorizable\Rule\Restriction;
 
 class RuleTest extends PHPUnit_Framework_TestCase
 {

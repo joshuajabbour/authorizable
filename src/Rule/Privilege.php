@@ -1,6 +1,8 @@
 <?php
 
-namespace JoshuaJabbour\Authorizable;
+namespace JoshuaJabbour\Authorizable\Rule;
+
+use JoshuaJabbour\Authorizable\Rule\Rule;
 
 class Privilege extends Rule
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace JoshuaJabbour\Authorizable;
+namespace JoshuaJabbour\Authorizable\Rule;
 
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as BaseCollection;
 
-class RuleCollection extends Collection
+class Collection extends BaseCollection
 {
     /**
      * Returns all relevant rules based on an action and a resource.

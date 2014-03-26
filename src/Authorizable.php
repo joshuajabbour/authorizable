@@ -6,6 +6,9 @@
  */
 namespace JoshuaJabbour\Authorizable;
 
+use JoshuaJabbour\Authorizable\Rule\Privilege;
+use JoshuaJabbour\Authorizable\Rule\Restriction;
+use JoshuaJabbour\Authorizable\Rule\Collection as RuleCollection;
 use InvalidArgumentException;
 use BadMethodCallException;
 use Closure;

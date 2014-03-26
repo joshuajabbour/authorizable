@@ -1,6 +1,6 @@
 <?php
 
-namespace JoshuaJabbour\Authorizable;
+namespace JoshuaJabbour\Authorizable\Rule;
 
 use Closure;
 
