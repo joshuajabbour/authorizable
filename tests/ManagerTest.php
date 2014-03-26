@@ -4,16 +4,16 @@ namespace JoshuaJabbour\Authorizable\Tests;
 
 use stdClass;
 use PHPUnit_Framework_TestCase;
-use JoshuaJabbour\Authorizable\Authorizable;
-use JoshuaJabbour\Authorizable\Rule\Rule;
+use JoshuaJabbour\Authorizable\Manager as AuthorizableManager;
+use JoshuaJabbour\Authorizable\Rule;
 use JoshuaJabbour\Authorizable\Rule\Privilege;
 use JoshuaJabbour\Authorizable\Rule\Restriction;
 
-class AuthorizableTest extends PHPUnit_Framework_TestCase
+class ManagerTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->auth = new Authorizable;
+        $this->auth = new AuthorizableManager;
     }
 
     public function tearDown()

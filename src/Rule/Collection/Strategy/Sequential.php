@@ -1,8 +1,8 @@
 <?php
 
-namespace JoshuaJabbour\Authorizable\Strategy;
+namespace JoshuaJabbour\Authorizable\Rule\Collection\Strategy;
 
-use JoshuaJabbour\Authorizable\Strategy\Strategy;
+use JoshuaJabbour\Authorizable\Rule\Collection\Strategy;
 use JoshuaJabbour\Authorizable\Rule\Collection as RuleCollection;
 
 class Sequential extends Strategy

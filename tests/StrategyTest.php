@@ -3,14 +3,14 @@
 namespace JoshuaJabbour\Authorizable\Tests;
 
 use PHPUnit_Framework_TestCase;
-use JoshuaJabbour\Authorizable\Rule\Rule;
+use JoshuaJabbour\Authorizable\Rule;
 use JoshuaJabbour\Authorizable\Rule\Privilege;
 use JoshuaJabbour\Authorizable\Rule\Restriction;
 use JoshuaJabbour\Authorizable\Rule\Collection as RuleCollection;
-use JoshuaJabbour\Authorizable\Strategy\Strategy;
-use JoshuaJabbour\Authorizable\Strategy\Sequential as SequentialStrategy;
-use JoshuaJabbour\Authorizable\Strategy\Additive as AdditiveStrategy;
-use JoshuaJabbour\Authorizable\Strategy\Subtractive as SubtractiveStrategy;
+use JoshuaJabbour\Authorizable\Rule\Collection\Strategy;
+use JoshuaJabbour\Authorizable\Rule\Collection\Strategy\Sequential as SequentialStrategy;
+use JoshuaJabbour\Authorizable\Rule\Collection\Strategy\Additive as AdditiveStrategy;
+use JoshuaJabbour\Authorizable\Rule\Collection\Strategy\Subtractive as SubtractiveStrategy;
 
 class StrategyTest extends PHPUnit_Framework_TestCase
 {

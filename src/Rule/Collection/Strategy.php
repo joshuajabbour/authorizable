@@ -1,6 +1,6 @@
 <?php
 
-namespace JoshuaJabbour\Authorizable\Strategy;
+namespace JoshuaJabbour\Authorizable\Rule\Collection;
 
 use JoshuaJabbour\Authorizable\Rule\Collection as RuleCollection;
 

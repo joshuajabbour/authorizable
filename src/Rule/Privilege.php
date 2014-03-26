@@ -2,7 +2,7 @@
 
 namespace JoshuaJabbour\Authorizable\Rule;
 
-use JoshuaJabbour\Authorizable\Rule\Rule;
+use JoshuaJabbour\Authorizable\Rule;
 
 class Privilege extends Rule
 {

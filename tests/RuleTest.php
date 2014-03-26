@@ -5,7 +5,7 @@ namespace JoshuaJabbour\Authorizable\Tests;
 use stdClass;
 use Mockery;
 use PHPUnit_Framework_TestCase;
-use JoshuaJabbour\Authorizable\Rule\Rule;
+use JoshuaJabbour\Authorizable\Rule;
 use JoshuaJabbour\Authorizable\Rule\Privilege;
 use JoshuaJabbour\Authorizable\Rule\Restriction;
 
