@@ -50,7 +50,7 @@ abstract class Rule
     abstract public function check();
 
     /**
-     * Determine if the rule is relevant based on an action and resource.
+     * Determine if the rule is relevant based on an action and a resource.
      *
      * @param string|array $action Action to test against the rule.
      * @param string|object $resource Resource to test against the rule.

@@ -6,7 +6,6 @@
  */
 namespace JoshuaJabbour\Authorizable;
 
-use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use BadMethodCallException;
 use Closure;
@@ -17,7 +16,7 @@ class Authorizable
 
     public function __construct()
     {
-        $this->rules = new Collection;
+        $this->rules = new RuleCollection;
     }
 
     /**
@@ -135,7 +134,7 @@ class Authorizable
      * @param array|string $actions Actions for the rule.
      * @param array|string $resources Resources for the rule.
      * @param Closure|null $condition Optional condition for the rule.
-     * @return void
+     * @return Rule|RuleCollection
      */
     protected function addRules($behavior, $actions, $resources, $condition = null)
     {
@@ -155,22 +154,40 @@ class Authorizable
             $condition = Closure::bind($condition, $this);
         }
 
+        $rules = new RuleCollection;
+
         foreach ($resources as $resource) {
             foreach ($actions as $action) {
                 $rule = $behavior ? new Privilege($action, $resource, $condition) : new Restriction($action, $resource, $condition);
-                $this->rules->push($rule);
+                $rules->push($rule);
             }
         }
+
+        $this->rules = $this->rules->merge($rules);
+
+        return $rules->count() > 1 ? $rules : $rules->first();
     }
 
     /**
-     * Returns the current rule set.
+     * Returns all current rules.
      *
-     * @return Collection
+     * @return RuleCollection
      */
     public function getRules()
     {
         return $this->rules;
+    }
+
+    /**
+     * Returns all relevant rules based on an action and a resource.
+     *
+     * @param string|array $action Action to test against the collection.
+     * @param string|object $resource Resource to test against the collection.
+     * @return RuleCollection
+     */
+    public function getRelevantRules($action, $resource)
+    {
+        return $this->rules->getRelevantRules($action, $resource);
     }
 
     public function setCheckToSequential()
