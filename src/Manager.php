@@ -24,14 +24,19 @@ class Manager
     protected $strategy;
 
     /**
+     * @var RuleCollection Collection of rules to use for evaluation.
+     */
+    protected $rules;
+
+    /**
      * Constructor
      *
      * @param Strategy $strategy Comparison strategy.
      */
     public function __construct(Strategy $strategy = null)
     {
+        $this->setStrategy($strategy);
         $this->rules = new RuleCollection;
-        $this->strategy = $strategy ?: new SequentialStrategy;
     }
 
     /**
@@ -203,11 +208,11 @@ class Manager
      * Set the comparison strategy to use for rule evaluation.
      *
      * @param Strategy $strategy Comparison strategy.
-     * @return Manager
+     * @return Authorizable\Manager
      */
-    public function setStrategy(Strategy $strategy)
+    public function setStrategy(Strategy $strategy = null)
     {
-        $this->strategy = $strategy;
+        $this->strategy = $strategy ?: new SequentialStrategy;
         return $this;
     }
 
