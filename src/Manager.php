@@ -19,7 +19,19 @@ use Closure;
 class Manager
 {
     /**
-     * @var Strategy The comparison strategy to use for rule evaluation.
+     * @var mixed Primary user for the application.
+     */
+    protected $primaryUser;
+
+    /**
+     * @var mixed Temporary user to use for the rule evaluation request.
+     *
+     * This user only remains active for a single evaluation request.
+     */
+    protected $temporaryUser;
+
+    /**
+     * @var Strategy Comparison strategy to use for rule evaluation.
      */
     protected $strategy;
 
@@ -31,12 +43,84 @@ class Manager
     /**
      * Constructor
      *
+     * @param mixed $user Primary user for the application.
      * @param Strategy $strategy Comparison strategy.
      */
-    public function __construct(Strategy $strategy = null)
+    public function __construct($user = null, Strategy $strategy = null)
     {
+        $this->setPrimaryUser($user);
         $this->setStrategy($strategy);
         $this->rules = new RuleCollection;
+    }
+
+    /**
+     * Evaluate relevant rules and return result.
+     *
+     * @see Authorizable\Manager::evaluate()
+     * @return boolean
+     */
+    public function can()
+    {
+        $authorized = call_user_func_array([$this, 'evaluate'], func_get_args());
+
+        $this->temporaryUser = null;
+
+        return $authorized;
+    }
+
+    /**
+     * Evaluate relevant rules and return opposite of result.
+     *
+     * @see Authorizable\Manager::evaluate()
+     * @return boolean
+     */
+    public function cannot()
+    {
+        $authorized = ! call_user_func_array([$this, 'evaluate'], func_get_args());
+
+        $this->temporaryUser = null;
+
+        return $authorized;
+    }
+
+    /**
+     * Evaluate relevant rules and return result if any rules match.
+     *
+     * @see Authorizable\Manager::evaluate()
+     * @return boolean
+     */
+    public function canAny()
+    {
+        foreach ($actions as $action) {
+            if ($allowed = call_user_func_array([$this, 'evaluate'], func_get_args())) {
+                $this->temporaryUser = null;
+                return true;
+            }
+        }
+
+        $this->temporaryUser = null;
+
+        return false;
+    }
+
+    /**
+     * Evaluate relevant rules and return result if all rules match.
+     *
+     * @see Authorizable\Manager::evaluate()
+     * @return boolean
+     */
+    public function canAll()
+    {
+        foreach ($actions as $action) {
+            if (! $allowed = call_user_func_array([$this, 'evaluate'], func_get_args())) {
+                $this->temporaryUser = null;
+                return false;
+            }
+        }
+
+        $this->temporaryUser = null;
+
+        return true;
     }
 
     /**
@@ -47,7 +131,7 @@ class Manager
      * @param ... Additional parameters to pass to the condition.
      * @return boolean
      */
-    public function can()
+    protected function evaluate()
     {
         $args = func_get_args();
         $action = array_shift($args);
@@ -60,51 +144,6 @@ class Manager
         }
 
         return $this->check($this->getRelevantRules($action, $resource), $args);
-    }
-
-    /**
-     * Evaluate relevant rules and return opposite of result.
-     *
-     * @see Authorizable\Manager::can()
-     * @return boolean
-     */
-    public function cannot()
-    {
-        return ! call_user_func_array([$this, 'can'], func_get_args());
-    }
-
-    /**
-     * Evaluate relevant rules and return result if any rules match.
-     *
-     * @see Authorizable\Manager::can()
-     * @return boolean
-     */
-    public function canAny()
-    {
-        foreach ($actions as $action) {
-            $allowed = call_user_func_array([$this, 'can'], func_get_args());
-            if ($allowed) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Evaluate relevant rules and return result if all rules match.
-     *
-     * @see Authorizable\Manager::can()
-     * @return boolean
-     */
-    public function canAll()
-    {
-        foreach ($actions as $action) {
-            $allowed = call_user_func_array([$this, 'can'], func_get_args());
-            if (! $allowed) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -202,6 +241,58 @@ class Manager
     public function getRelevantRules($action, $resource)
     {
         return $this->rules->getRelevantRules($action, $resource);
+    }
+
+    /**
+     * Return active user.
+     *
+     * If a temporary user was set for the evaluation request, it will be returned.
+     * Otherwise, the primary user for the application will be returned, if set.
+     *
+     * @see Authorizable\Manager::setPrimaryUser()
+     * @see Authorizable\Manager::setTemporaryUser()
+     * @return mixed|null
+     */
+    public function getUser()
+    {
+        return $this->temporaryUser ?: $this->primaryUser;
+    }
+
+    /**
+     * Set the primary user for the application.
+     *
+     * @param mixed $user User to set.
+     * @return Authorizable\Manager
+     */
+    public function setPrimaryUser($user)
+    {
+        $this->primaryUser = $user;
+        return $this;
+    }
+
+    /**
+     * Set a temporary user for the request.
+     *
+     * @param mixed $user User to set.
+     * @return Authorizable\Manager
+     */
+    public function setTemporaryUser($user)
+    {
+        $this->temporaryUser = $user;
+        return $this;
+    }
+
+    /**
+     * Set a temporary user for the request.
+     *
+     * Alias for Authorizable\Manager::setTemporaryUser().
+     *
+     * @param mixed $user User to set.
+     * @return Authorizable\Manager
+     */
+    public function user($user)
+    {
+        return $this->setTemporaryUser($user);
     }
 
     /**
