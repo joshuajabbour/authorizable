@@ -2,32 +2,9 @@
 
 namespace JoshuaJabbour\Authorizable\Laravel\Traits;
 
-use JoshuaJabbour\Authorizable\Manager as AuthorizableManager;
-use App;
-
 trait AuthorizableUserAdditions
 {
-    /**
-     * The current authorizable manager instance.
-     *
-     * @var Authorizable\Manager
-     */
-    protected $authorizable_manager;
-
-    public function getAuthorizableManager()
-    {
-        if (is_null($this->authorizable_manager)) {
-            $this->setAuthorizableManager(App::make('authorizable'));
-        }
-
-        return $this->authorizable_manager;
-    }
-
-    public function setAuthorizableManager(AuthorizableManager $authorizable)
-    {
-        $this->authorizable_manager = $authorizable;
-        return $this;
-    }
+    use AuthorizableAdditions;
 
     public function __call($method, $args)
     {
