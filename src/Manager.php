@@ -59,7 +59,7 @@ class Manager
      * @see Authorizable\Manager::evaluate()
      * @return boolean
      */
-    public function can()
+    public function can($action, $resource)
     {
         $authorized = call_user_func_array([$this, 'evaluate'], func_get_args());
 
@@ -74,7 +74,7 @@ class Manager
      * @see Authorizable\Manager::evaluate()
      * @return boolean
      */
-    public function cannot()
+    public function cannot($action, $resource)
     {
         $authorized = ! call_user_func_array([$this, 'evaluate'], func_get_args());
 
@@ -89,11 +89,16 @@ class Manager
      * @see Authorizable\Manager::evaluate()
      * @return boolean
      */
-    public function canAny()
+    public function canAny(array $actions, $resource)
     {
+        $args = func_get_args();
+
         foreach ($actions as $action) {
-            if ($allowed = call_user_func_array([$this, 'evaluate'], func_get_args())) {
+            $args[0] = $action;
+
+            if ($allowed = call_user_func_array([$this, 'evaluate'], $args)) {
                 $this->temporaryUser = null;
+
                 return true;
             }
         }
@@ -109,11 +114,16 @@ class Manager
      * @see Authorizable\Manager::evaluate()
      * @return boolean
      */
-    public function canAll()
+    public function canAll(array $actions, $resource)
     {
+        $args = func_get_args();
+
         foreach ($actions as $action) {
-            if (! $allowed = call_user_func_array([$this, 'evaluate'], func_get_args())) {
+            $args[0] = $action;
+
+            if (! $allowed = call_user_func_array([$this, 'evaluate'], $args)) {
                 $this->temporaryUser = null;
+
                 return false;
             }
         }
@@ -128,14 +138,16 @@ class Manager
      *
      * @param string $action Action to test against the rules.
      * @param string|object $resource Resource to test against the rules.
-     * @param ... Additional parameters to pass to the condition.
+     * @param mixed ... Additional parameters to pass to the condition.
      * @return boolean
      */
-    protected function evaluate()
+    protected function evaluate($action, $resource)
     {
-        $args = func_get_args();
-        $action = array_shift($args);
-        $resource = array_shift($args);
+        if (! is_string($action)) {
+            throw new InvalidArgumentException('Action must be a string; ' . gettype($action) . ' was provided.');
+        }
+
+        $args = array_slice(func_get_args(), 2);
 
         if (is_object($resource)) {
             $resource_object = $resource;
