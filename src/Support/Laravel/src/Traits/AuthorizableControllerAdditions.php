@@ -15,8 +15,6 @@ trait AuthorizableControllerAdditions
      */
     protected $authorizable_manager;
 
-    protected $authorizable_user;
-
     protected $is_authorized = false;
 
     /**
@@ -71,24 +69,6 @@ trait AuthorizableControllerAdditions
     public function setAuthorizableManager(AuthorizableManager $authorizable_manager)
     {
         $this->authorizable_manager = $authorizable_manager;
-
-        return $this;
-    }
-
-    public function getAuthorizableUser()
-    {
-        if (is_null($this->authorizable_user)) {
-            $this->authorizable_user = $this->getAuthorizableManager()->getUser();
-        }
-
-        return $this->authorizable_user;
-    }
-
-    public function setAuthorizableUser($user)
-    {
-        $this->getAuthorizableManager()->setPrimaryUser($user);
-
-        $this->authorizable_user = $user;
 
         return $this;
     }
