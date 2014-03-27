@@ -306,13 +306,4 @@ class Manager
         $this->strategy = $strategy ?: new SequentialStrategy;
         return $this;
     }
-
-    // public function __call($name, $arguments)
-    // {
-    //     if (in_array($name, ['can', 'cannot', 'canAny', 'canAll'])) {
-    //         return call_user_func_array([$this, $name], $arguments);
-    //     }
-
-    //     throw new BadMethodCallException;
-    // }
 }
