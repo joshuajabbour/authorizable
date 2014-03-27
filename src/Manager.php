@@ -18,22 +18,28 @@ use Closure;
 
 class Manager
 {
+    /**
+     * @var Strategy The comparison strategy to use for rule evaluation.
+     */
     protected $strategy;
 
+    /**
+     * Constructor
+     *
+     * @param Strategy $strategy Comparison strategy.
+     */
     public function __construct(Strategy $strategy = null)
     {
         $this->rules = new RuleCollection;
         $this->strategy = $strategy ?: new SequentialStrategy;
     }
 
-    protected function check(RuleCollection $rules, array $args = array())
-    {
-        return $this->strategy->check($rules, $args);
-    }
-
     /**
-     * Determine if current user can access the given action and resource
+     * Evaluate relevant rules and return result.
      *
+     * @param string $action Action to test against the rules.
+     * @param string|object $resource Resource to test against the rules.
+     * @param ... Additional parameters to pass to the condition.
      * @return boolean
      */
     public function can()
@@ -52,9 +58,9 @@ class Manager
     }
 
     /**
-     * Determine if current user cannot access the given action and resource
-     * Returns negation of can()
+     * Evaluate relevant rules and return opposite of result.
      *
+     * @see Authorizable\Manager::can()
      * @return boolean
      */
     public function cannot()
@@ -62,6 +68,12 @@ class Manager
         return ! call_user_func_array([$this, 'can'], func_get_args());
     }
 
+    /**
+     * Evaluate relevant rules and return result if any rules match.
+     *
+     * @see Authorizable\Manager::can()
+     * @return boolean
+     */
     public function canAny()
     {
         foreach ($actions as $action) {
@@ -73,6 +85,12 @@ class Manager
         return false;
     }
 
+    /**
+     * Evaluate relevant rules and return result if all rules match.
+     *
+     * @see Authorizable\Manager::can()
+     * @return boolean
+     */
     public function canAll()
     {
         foreach ($actions as $action) {
@@ -85,11 +103,21 @@ class Manager
     }
 
     /**
-     * Define a privilege rule for the given actions and resources.
+     * Evaluate relevant rules and return result.
      *
-     * @param array|string $actions Actions for the rule.
-     * @param array|string $resources Resources for the rule.
-     * @param Closure|null $condition Optional condition for the rule.
+     * @param RuleCollection $rules The rules to evaluate.
+     * @param array $args Parameters to pass to the condition.
+     * @return boolean
+     */
+    protected function check(RuleCollection $rules, array $args = array())
+    {
+        return $this->strategy->check($rules, $args);
+    }
+
+    /**
+     * Define a privilege for the given actions and resources.
+     *
+     * @see Authorizable\Manager::addRules()
      * @return RuleCollection
      */
     public function allow($actions, $resources, $condition = null)
@@ -98,11 +126,9 @@ class Manager
     }
 
     /**
-     * Define a restriction rule for the given actions and resources.
+     * Define a restriction for the given actions and resources.
      *
-     * @param array|string $actions Actions for the rule.
-     * @param array|string $resources Resources for the rule.
-     * @param Closure|null $condition Optional condition for the rule.
+     * @see Authorizable\Manager::addRules()
      * @return RuleCollection
      */
     public function deny($actions, $resources, $condition = null)
@@ -152,7 +178,7 @@ class Manager
     }
 
     /**
-     * Returns all rules.
+     * Return all rules.
      *
      * @return RuleCollection
      */
@@ -162,7 +188,7 @@ class Manager
     }
 
     /**
-     * Returns all relevant rules based on an action and a resource.
+     * Return all relevant rules based on an action and a resource.
      *
      * @param string|array $action Action to test against the collection.
      * @param string|object $resource Resource to test against the collection.
@@ -173,18 +199,24 @@ class Manager
         return $this->rules->getRelevantRules($action, $resource);
     }
 
+    /**
+     * Set the comparison strategy to use for rule evaluation.
+     *
+     * @param Strategy $strategy Comparison strategy.
+     * @return Manager
+     */
     public function setStrategy(Strategy $strategy)
     {
         $this->strategy = $strategy;
         return $this;
     }
 
-    public function __call($name, $arguments)
-    {
-        if (in_array($name, ['can', 'cannot', 'canAny', 'canAll'])) {
-            return call_user_func_array([$this, $name], $arguments);
-        }
+    // public function __call($name, $arguments)
+    // {
+    //     if (in_array($name, ['can', 'cannot', 'canAny', 'canAll'])) {
+    //         return call_user_func_array([$this, $name], $arguments);
+    //     }
 
-        throw new BadMethodCallException;
-    }
+    //     throw new BadMethodCallException;
+    // }
 }

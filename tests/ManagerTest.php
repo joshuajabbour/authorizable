@@ -16,11 +16,6 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $this->auth = new AuthorizableManager;
     }
 
-    public function tearDown()
-    {
-        //
-    }
-
     public function testCanCreateNewRules()
     {
         $rule1 = $this->auth->allow('read', 'User')->first();
