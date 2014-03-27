@@ -8,7 +8,7 @@ return array(
 
         $authenticated_user = $authorizable->getUser();
 
-        // Anyone can view user accounts.
+        // Any user can view user accounts.
         $authorizable->allow('show', $user_model);
 
         // Only anonymous users can create accounts.
@@ -16,7 +16,7 @@ return array(
             $authorizable->allow('create', $user_model);
         }
 
-        // Users can update or delete their own accounts.
+        // Authenticated users can update or delete their own accounts.
         $authorizable->allow(['update', 'destroy'], $user_model, function ($user) {
             // Within conditions, `$this` is the active Authorizable\Manager instance.
             return $this->getUser()->id == $user->id;
