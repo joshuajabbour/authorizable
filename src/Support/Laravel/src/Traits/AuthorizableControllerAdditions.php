@@ -42,13 +42,13 @@ trait AuthorizableControllerAdditions
             $this->is_authorized = call_user_func_array([$this->getAuthorizableManager(), 'can'], $args);
 
             if (! $this->is_authorized) {
-                $route = App::make('router')->getCurrentRoute();
+                $router = App::make('router');
 
                 throw new AccessDenied(array(
                     'action' => $args[0],
                     'resource' => $args[1],
-                    'route' => $route,
-                    'request' => $route->getCurrentRequest(),
+                    'route' => $router->getCurrentRoute(),
+                    'request' => $router->getCurrentRequest(),
                 ));
             }
         }
