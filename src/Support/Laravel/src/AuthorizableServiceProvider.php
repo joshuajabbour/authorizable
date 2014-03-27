@@ -1,6 +1,6 @@
 <?php
 
-namespace JoshuaJabbour\Authorizable;
+namespace JoshuaJabbour\Authorizable\Laravel;
 
 use JoshuaJabbour\Authorizable\Manager as AuthorizableManager;
 use Illuminate\Support\ServiceProvider;

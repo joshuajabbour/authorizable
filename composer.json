@@ -18,7 +18,8 @@
     "autoload": {
         "psr-4": {
             "JoshuaJabbour\\Authorizable\\": "src",
-            "JoshuaJabbour\\Authorizable\\Tests\\": "tests"
+            "JoshuaJabbour\\Authorizable\\Tests\\": "tests",
+            "JoshuaJabbour\\Authorizable\\Laravel\\": "src/Support/Laravel/src"
         }
     },
     "minimum-stability": "stable"

@@ -1,6 +1,6 @@
 <?php
 
-namespace JoshuaJabbour\Authorizable\Support\Laravel\Exceptions;
+namespace JoshuaJabbour\Authorizable\Laravel\Exceptions;
 
 use App;
 use Exception;

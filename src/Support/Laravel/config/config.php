@@ -17,7 +17,8 @@ return array(
         }
 
         // Users can update or delete their own accounts.
-        $authorizable->allow(['update', 'delete'], $user_model, function ($user) {
+        $authorizable->allow(['update', 'destroy'], $user_model, function ($user) {
+            // This is the active Authorizable\Manager instance.
             return $this->getUser() == $user->id;
         });
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace JoshuaJabbour\Authorizable\Support\Laravel;
+namespace JoshuaJabbour\Authorizable\Laravel\Traits;
 
 use JoshuaJabbour\Authorizable\Manager as AuthorizableManager;
-use JoshuaJabbour\Authorizable\Support\Laravel\Exceptions\AccessDenied;
+use JoshuaJabbour\Authorizable\Laravel\Exceptions\AccessDenied;
 use App;
 
 trait AuthorizableControllerAdditions
