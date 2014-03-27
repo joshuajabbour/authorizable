@@ -8,6 +8,11 @@ use App;
 
 trait AuthorizableControllerAdditions
 {
+    /**
+     * The current authorizable manager instance.
+     *
+     * @var Authorizable\Manager
+     */
     protected $authorizable_manager;
 
     protected $authorizable_user;
