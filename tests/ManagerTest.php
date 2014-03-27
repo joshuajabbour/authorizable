@@ -2,12 +2,11 @@
 
 namespace JoshuaJabbour\Authorizable\Tests;
 
-use stdClass;
-use PHPUnit_Framework_TestCase;
 use JoshuaJabbour\Authorizable\Manager as AuthorizableManager;
-use JoshuaJabbour\Authorizable\Rule;
 use JoshuaJabbour\Authorizable\Rule\Privilege;
 use JoshuaJabbour\Authorizable\Rule\Restriction;
+use PHPUnit_Framework_TestCase;
+use stdClass;
 
 class ManagerTest extends PHPUnit_Framework_TestCase
 {
@@ -24,10 +23,10 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $this->assertCount(2, $this->auth->getRules());
 
         $this->assertContains($rule1, $this->auth->getRules());
-        $this->assertInstanceOf('JoshuaJabbour\Authorizable\Rule\Privilege', $rule1);
+        $this->assertTrue($rule1 instanceof Privilege);
 
         $this->assertContains($rule2, $this->auth->getRules());
-        $this->assertInstanceOf('JoshuaJabbour\Authorizable\Rule\Restriction', $rule2);
+        $this->assertTrue($rule2 instanceof Restriction);
     }
 
     public function testCanFetchAllRulesForAction()
