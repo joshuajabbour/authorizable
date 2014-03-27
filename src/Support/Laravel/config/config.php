@@ -21,6 +21,14 @@ return array(
             return $this->getUser() == $user->id;
         });
 
-    }
+    },
+
+    // These messages can be translator keys or raw messages.
+    // Translator keys will be looked up in the language file.
+    'messages' => array(
+        'access_denied' => array(
+            'default' => 'messages.access_denied.resource.default',
+        ),
+    ),
 
 );
