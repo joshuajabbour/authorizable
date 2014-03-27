@@ -131,7 +131,12 @@ abstract class Rule
      */
     protected function checkCondition(array $args = array())
     {
-        return is_callable($this->condition) ? call_user_func_array($this->condition, $args) : true;
+        // Condition is only evaluated if the resource (first argument) is an object.
+        if (isset($args[0]) && is_object($args[0]) && is_callable($this->condition)) {
+            return call_user_func_array($this->condition, $args);
+        }
+
+        return true;
     }
 
     public function __invoke()

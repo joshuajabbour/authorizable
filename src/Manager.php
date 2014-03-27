@@ -147,12 +147,15 @@ class Manager
             throw new InvalidArgumentException('Action must be a string; ' . gettype($action) . ' was provided.');
         }
 
-        $args = array_slice(func_get_args(), 2);
+        if (! (is_string($resource) || is_object($resource))) {
+            throw new InvalidArgumentException('Resource must be a string or an object; ' . gettype($resource) . ' was provided.');
+        }
+
+        // Pass all args except action to the rule condition check.
+        $args = array_slice(func_get_args(), 1);
 
         if (is_object($resource)) {
-            $resource_object = $resource;
-            $resource = get_class($resource_object);
-            array_unshift($args, $resource_object);
+            $resource = get_class($args[0]);
         }
 
         return $this->check($this->getRelevantRules($action, $resource), $args);
