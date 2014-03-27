@@ -1,6 +1,24 @@
 {
     "name": "joshuajabbour/authorizable",
     "description": "A flexible authorization component.",
+    "license": "MIT",
+    "keywords": [
+        "authorization",
+        "authorize",
+        "security",
+        "access",
+        "role",
+        "permission",
+        "ability",
+        "allow",
+        "deny",
+        "can",
+        "acl",
+        "rbac",
+        "authority",
+        "laravel",
+        "laravel 4"
+    ],
     "authors": [
         {
             "name": "Joshua Jabbour",
@@ -16,7 +34,7 @@
         "mockery/mockery": "0.9.*"
     },
     "suggest": {
-        "illuminate/translation": "Allows for translatable access denied messages."
+        "illuminate/translation": "Allows for translatable messages."
     },
     "autoload": {
         "psr-4": {
