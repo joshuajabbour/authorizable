@@ -15,14 +15,22 @@ class AuthorizableServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->package('joshuajabbour/authorizable', 'authorizable', __DIR__.'/..');
+    }
+
+    /**
      * Register the service provider.
      *
      * @return void
      */
     public function register()
     {
-        $this->package('joshuajabbour/authorizable');
-
         $this->app['authorizable'] = $this->app->share(function ($app) {
 
             $authorizable = new AuthorizableManager($app['auth']->user());
