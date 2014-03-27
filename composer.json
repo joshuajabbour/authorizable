@@ -15,6 +15,9 @@
         "phpunit/phpunit": "4.0.*",
         "mockery/mockery": "0.9.*"
     },
+    "suggest": {
+        "illuminate/translation": "Allows for translatable access denied messages."
+    },
     "autoload": {
         "psr-4": {
             "JoshuaJabbour\\Authorizable\\": "src",
