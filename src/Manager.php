@@ -14,6 +14,7 @@ use JoshuaJabbour\Authorizable\Rule\Collection\Strategy;
 use JoshuaJabbour\Authorizable\Rule\Collection\Strategy\Sequential as SequentialStrategy;
 use InvalidArgumentException;
 use BadMethodCallException;
+use ErrorException;
 use Closure;
 
 class Manager
@@ -270,7 +271,7 @@ class Manager
      */
     public function getUser()
     {
-        return $this->temporaryUser ?: $this->primaryUser;
+        return $this->user;
     }
 
     /**
@@ -320,5 +321,15 @@ class Manager
     {
         $this->strategy = $strategy ?: new SequentialStrategy;
         return $this;
+    }
+
+    public function __get($property)
+    {
+        if ($property == 'user') {
+            return $this->temporaryUser ?: $this->primaryUser;
+        }
+
+        throw new ErrorException("Property {$property} does not exist.");
+
     }
 }
