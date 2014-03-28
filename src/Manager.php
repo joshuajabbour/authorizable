@@ -260,10 +260,10 @@ class Manager
     }
 
     /**
-     * Return active user.
+     * Return the active user.
      *
-     * If a temporary user was set for the evaluation request, it will be returned.
-     * Otherwise, the primary user for the application will be returned, if set.
+     * If a temporary user was set for the request, it will be returned.
+     * Otherwise, the primary user for the application will be returned.
      *
      * @see Authorizable\Manager::setPrimaryUser()
      * @see Authorizable\Manager::setTemporaryUser()
@@ -272,6 +272,16 @@ class Manager
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Return the primary user for the application.
+     *
+     * @return mixed|null
+     */
+    public function getPrimaryUser()
+    {
+        return $this->primaryUser;
     }
 
     /**
@@ -284,6 +294,16 @@ class Manager
     {
         $this->primaryUser = $user;
         return $this;
+    }
+
+    /**
+     * Return the temporary user for the request.
+     *
+     * @return mixed|null
+     */
+    public function getTemporaryUser()
+    {
+        return $this->temporaryUser;
     }
 
     /**
